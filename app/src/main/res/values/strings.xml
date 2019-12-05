@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FriMo</string>
+
+    <string name="main_txt_homepage">首页</string>
+    <string name="main_txt_trends">动态</string>
+    <string name="main_txt_user">我的</string>
+</resources>
