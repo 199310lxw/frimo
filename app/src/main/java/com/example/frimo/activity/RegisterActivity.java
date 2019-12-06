@@ -93,6 +93,8 @@ public class RegisterActivity extends BaseActivity {
      * 获取短信验证码
      */
     private void getSMSCode(String str_phone){
+        if(checkIsRegister(str_phone))
+
         BmobSMS.requestSMSCode(str_phone, "frimo", new QueryListener<Integer>() {
             @Override
             public void done(Integer smsId, BmobException e) {
@@ -101,6 +103,28 @@ public class RegisterActivity extends BaseActivity {
                 } else {
                     Toast.makeText(getApplicationContext(),"发送验证码失败!",Toast.LENGTH_SHORT).show();
                     Log.e("regster","发送验证码失败:"+e.getErrorCode() + "-" + e.getMessage() + "\n");
+                }
+            }
+        });
+    }
+
+    /**
+     * 判断手机号是否已经注册
+     * @param phoneNum
+     */
+    private Boolean checkIsRegister(String phoneNum){
+        BmobQuery<User> categoryBmobQuery = new BmobQuery<>();
+        categoryBmobQuery.addWhereEqualTo("obilePhoneNumber", phoneNum);
+        categoryBmobQuery.findObjects(new FindListener<Category>() {
+            @Override
+            public void done(List<User> object, BmobException e) {
+                if (e == null) {
+                      if()
+                       return false
+                } else {
+//                    Log.e("BMOB", e.toString());
+//                    Snackbar.make(mBtnEqual, e.getMessage(), Snackbar.LENGTH_LONG).show();
+                    return true
                 }
             }
         });
