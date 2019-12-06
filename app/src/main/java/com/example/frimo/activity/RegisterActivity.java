@@ -124,7 +124,7 @@ public class RegisterActivity extends BaseActivity {
                         public void done(User user, BmobException e) {
                             if (e == null) {
                                 Toast.makeText(getApplicationContext(), "注册成功", Toast.LENGTH_SHORT).show();
-                                Intent in=new Intent(getApplicationContext(), MainActivity.class);
+                                Intent in=new Intent(getApplicationContext(), LoginActivity.class);
                                 startActivity(in);
                                 finish();
                             } else {

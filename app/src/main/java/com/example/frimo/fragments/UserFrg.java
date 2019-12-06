@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.frimo.R;
+import com.example.frimo.activity.LoginActivity;
 import com.example.frimo.activity.RegisterActivity;
 
 import cn.bmob.v3.BmobSMS;
@@ -41,7 +42,7 @@ public class UserFrg  extends Fragment {
         img_set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in=new Intent(getActivity(), RegisterActivity.class);
+                Intent in=new Intent(getActivity(), LoginActivity.class);
                 startActivity(in);
             }
         });
