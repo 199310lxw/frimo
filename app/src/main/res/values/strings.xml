@@ -1,7 +1,24 @@
 <resources>
     <string name="app_name">FriMo</string>
 
+    //主页面
     <string name="main_txt_homepage">首页</string>
     <string name="main_txt_trends">动态</string>
     <string name="main_txt_user">我的</string>
+
+    //注册页面
+    <string name="register_top_tab_txt">注册</string>
+    <string name="register_phone_txt">请输入手机号码</string>
+    <string name="register_password_txt">请输入密码</string>
+    <string name="register_vertify_txt">请输入验证码</string>
+    <string name="register_getvertify_txt">获取验证码</string>
+    <string name="register_btn_confirm">立即注册</string>
+    <string name="register_txt_agreeMent">注册代表您同意:</string>
+    <string name="register_txt_confirm">《用户协议》</string>
+
+    <string name="login_top_tab_txt">登录</string>
+    <string name="login_btn_confirm">立即登录</string>
+
+    //登录页面
+
 </resources>

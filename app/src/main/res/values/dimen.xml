@@ -4,6 +4,6 @@
     <dimen name="main_bottom_picture_unite_size">24dp</dimen>
     <dimen name="main_bottom_layout_size">48dp</dimen>
     <dimen name="unite_top_tab_size">64dp</dimen>
-    <dimen name="unite_txt_to_top_tab_size">34dp</dimen>
+    <dimen name="unite_txt_to_top_tab_size">30dp</dimen>
     <dimen name="unite_top_tab_txt_size">18sp</dimen>
 </resources>
