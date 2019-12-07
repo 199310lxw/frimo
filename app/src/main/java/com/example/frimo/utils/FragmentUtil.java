@@ -1,5 +1,7 @@
 package com.example.frimo.utils;
 
+import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -26,7 +28,7 @@ public class FragmentUtil {
      * @param layoutId FrameLayout布局id
      * @param fragment 显示的Fragment
      */
-    public static void showFragment(int layoutId, Fragment fragment) {
+    public static void showFragment(int layoutId, Fragment fragment,Boolean isLogin) {
         if (fragment == null) {
             fragment = new Fragment();
         }
@@ -64,6 +66,9 @@ public class FragmentUtil {
                         entry.setValue(false);
                     }
                 }
+                Bundle bundle=new Bundle();
+                bundle.putBoolean("ISLOGIN",isLogin);
+                fragment.setArguments(bundle);
                 transaction.add(layoutId, fragment);
                 fragmentBooleanMap.put(fragment, true);
             }

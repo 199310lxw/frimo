@@ -16,9 +16,12 @@
     <string name="register_txt_agreeMent">注册代表您同意:</string>
     <string name="register_txt_confirm">《用户协议》</string>
 
+    //登录页面
     <string name="login_top_tab_txt">登录</string>
     <string name="login_btn_confirm">立即登录</string>
 
-    //登录页面
+  //设置页面
+    <string  name="setting_txt_top_title">设置</string>
+    <string  name="setting_txt_unlogin">退出登陆</string>
 
 </resources>
