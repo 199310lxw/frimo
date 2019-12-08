@@ -6,20 +6,107 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/unite_top_tab_size"
-        android:background="@drawable/home_tab_bg">
+        android:background="#B6B3B3">
+      <ImageView
+          android:id="@+id/img_back"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:src="@mipmap/img_back_black"
+          android:layout_marginTop="30dp"
+          android:layout_marginLeft="10dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/setting_txt_top_title"
         android:layout_marginTop="@dimen/unite_txt_to_top_tab_size"
         android:textSize="@dimen/unite_top_tab_txt_size"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_centerHorizontal="true"/>
     </RelativeLayout>
-    <Button
+    <RelativeLayout
+        android:id="@+id/re_account"
+        android:layout_width="match_parent"
         android:layout_marginTop="20dp"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="账号与安全"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"/>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/frg_user_next_pic"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#C2C0C0"/>
+    <RelativeLayout
+        android:id="@+id/re_about"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关于陌友"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"/>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/frg_user_next_pic"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#C2C0C0"/>
+    <RelativeLayout
+        android:id="@+id/re_help"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="反馈"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"/>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/frg_user_next_pic"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#C2C0C0"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <Button
+        android:layout_marginTop="100dp"
         android:id="@+id/btn_unLogin"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="40dp"
         android:text="@string/setting_txt_unlogin" />
 </LinearLayout>

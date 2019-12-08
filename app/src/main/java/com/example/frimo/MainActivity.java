@@ -1,18 +1,14 @@
 package com.example.frimo;
 
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Color;
-import android.os.Build;
+
+import android.content.SharedPreferences;
+
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -20,8 +16,7 @@ import com.example.frimo.activity.BaseActivity;
 import com.example.frimo.fragments.HomeFrg;
 import com.example.frimo.fragments.TrendsFrg;
 import com.example.frimo.fragments.UserFrg;
-import com.example.frimo.receiver.LoginReceiver;
-import com.example.frimo.utils.Constants;
+
 import com.example.frimo.utils.FragmentUtil;
 import com.example.frimo.utils.SystemUtil;
 
@@ -49,7 +44,19 @@ public class MainActivity extends BaseActivity {
 
         SystemUtil.setAndroidNativeLightStatusBar(this, false);
         SystemUtil.initSystemBarTint(this, getResources().getColor(R.color.transparent_bg));
+        getLocalLoginData();
         initView();
+    }
+
+    /**
+     * 获取本地 SharedPreferences保存的用户数据
+     */
+    private  void getLocalLoginData(){
+        SharedPreferences sp=getSharedPreferences("userdata",MODE_PRIVATE);
+        //第二个参数为缺省值，如果不存在该key，返回缺省值
+        String username=sp.getString("username","");
+        String password=sp.getString("password","");
+        isLogin=sp.getBoolean("logintag",false);
     }
 
     /**

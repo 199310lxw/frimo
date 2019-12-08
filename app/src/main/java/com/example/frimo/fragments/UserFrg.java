@@ -1,14 +1,14 @@
 package com.example.frimo.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,8 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.frimo.R;
+import com.example.frimo.activity.DetailInfoActivity;
 import com.example.frimo.activity.LoginActivity;
-import com.example.frimo.activity.RegisterActivity;
 import com.example.frimo.activity.SettingActivity;
 import com.example.frimo.beans.User;
 import com.example.frimo.receiver.LoginReceiver;
@@ -28,18 +28,9 @@ import com.example.frimo.utils.Constants;
 
 import java.util.List;
 
-import cn.bmob.v3.BmobSMS;
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.QueryListener;
-import cn.bmob.v3.listener.UpdateListener;
-
 public class UserFrg  extends Fragment implements View.OnClickListener,LoginReceiver.IisLogin {
     private static final String TAG="UserFrg";
-    private Button btn_sendSMS;
-    private Button btn_confirm;
-    private EditText edit;
-    private String smsCode;
+
     private ImageView img_set;
     private ImageView head_pic;
     private TextView txt_username;
@@ -80,6 +71,7 @@ public class UserFrg  extends Fragment implements View.OnClickListener,LoginRece
         relative_my_trend=view.findViewById(R.id.relative_my_trend);
 
         initReceiver();
+        getLocalLoginData();
         img_set.setOnClickListener(this);
         relative_collect_people.setOnClickListener(this);
         relative_collect_trend.setOnClickListener(this);
@@ -115,7 +107,9 @@ public class UserFrg  extends Fragment implements View.OnClickListener,LoginRece
                     Toast.makeText(getActivity(),"哈哈哈，我已经登陆了",Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.relative_detail_info:
-                    Toast.makeText(getActivity(),"哈哈哈，我已经登陆了",Toast.LENGTH_SHORT).show();
+                    Intent in=new Intent(getActivity(), DetailInfoActivity.class);
+                    startActivity(in);
+                    break;
                 case R.id.relative_my_trend:
                     Toast.makeText(getActivity(),"哈哈哈，我已经登陆了",Toast.LENGTH_SHORT).show();
                     break;
@@ -123,6 +117,18 @@ public class UserFrg  extends Fragment implements View.OnClickListener,LoginRece
         }else{
             Toast.makeText(getActivity(),"请先登陆",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * 获取本地 SharedPreferences保存的用户数据
+     */
+    private  void getLocalLoginData(){
+        SharedPreferences sp=getActivity().getSharedPreferences("userdata", Context.MODE_PRIVATE);
+        //第二个参数为缺省值，如果不存在该key，返回缺省值
+        String username=sp.getString("username","游客123456");
+        String password=sp.getString("password","");
+        txt_username.setText(username);
+        isLogin=sp.getBoolean("logintag",false);
     }
 
     @Override

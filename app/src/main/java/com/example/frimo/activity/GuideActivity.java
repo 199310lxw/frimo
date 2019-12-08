@@ -20,6 +20,8 @@ public class GuideActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
+        SystemUtil.setAndroidNativeLightStatusBar(this, false);
+        SystemUtil.initSystemBarTint(this, getResources().getColor(R.color.transparent_bg));
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

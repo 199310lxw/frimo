@@ -13,6 +13,7 @@ import com.example.frimo.MainActivity;
 import com.example.frimo.R;
 import com.example.frimo.beans.User;
 import com.example.frimo.utils.Constants;
+import com.example.frimo.utils.SharedPreferenceUtil;
 import com.example.frimo.utils.SystemUtil;
 
 import java.io.Serializable;
@@ -80,7 +81,7 @@ public class LoginActivity extends BaseActivity {
     /**
      * 检查输入账号密码是否正确
      */
-    private void checkData(String str_username, String str_password) {
+    private void checkData(final String str_username, final String str_password) {
         BmobQuery<User> userBmobQuery = new BmobQuery<>();
         userBmobQuery.addWhereEqualTo("username", str_username);
         userBmobQuery.addWhereEqualTo("password", str_password);
@@ -95,6 +96,10 @@ public class LoginActivity extends BaseActivity {
                         bundle.putSerializable("user_info",(Serializable)object);
                         in_receiver.putExtra("user_bundle",bundle);
                         sendBroadcast(in_receiver);
+
+//                        saveDataInLocal(str_username,str_password,true);
+                        new SharedPreferenceUtil(getApplicationContext()).saveUserDataInLocal(str_username,str_password,true);
+
 
 
                         Toast.makeText(getApplicationContext(), "登陆成功", Toast.LENGTH_SHORT).show();

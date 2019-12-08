@@ -1,6 +1,7 @@
 package com.example.frimo.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -10,6 +11,7 @@ import com.example.frimo.utils.Constants;
 import com.example.frimo.utils.SystemUtil;
 
 public class SettingActivity extends BaseActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +21,12 @@ public class SettingActivity extends BaseActivity {
         initView();
     }
     private void initView(){
+        findViewById(R.id.img_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         findViewById(R.id.btn_unLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -27,10 +35,25 @@ public class SettingActivity extends BaseActivity {
                 in_receiver.setAction(Constants.UNLOGIN_RECEIVER_ACTION);
                 sendBroadcast(in_receiver);
 
+                deleteLocalUserData();
+
                 Intent in_ac=new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(in_ac);
                 finish();
             }
         });
+    }
+
+    /**
+     * 退出登陆，删除SharedPreferences中保存的用户数据
+     */
+    private void  deleteLocalUserData(){
+        SharedPreferences sp=getSharedPreferences("userdata",MODE_PRIVATE);
+        SharedPreferences.Editor editor=sp.edit();   //获取编辑器
+        editor.remove("username");   //删除一条数据
+        editor.remove("password");   //删除一条数据
+        editor.remove("logintag");   //删除一条数据
+        editor.clear();         //删除所有数据
+        editor.commit();     //提交修改，否则不生效
     }
 }

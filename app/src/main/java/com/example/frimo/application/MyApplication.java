@@ -2,7 +2,6 @@ package com.example.frimo.application;
 
 import android.app.Application;
 
-import com.example.frimo.R;
 import com.example.frimo.utils.Constants;
 
 import cn.bmob.v3.Bmob;

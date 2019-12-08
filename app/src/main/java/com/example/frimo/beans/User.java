@@ -1,5 +1,7 @@
 package com.example.frimo.beans;
 
+import java.io.File;
+
 import cn.bmob.v3.BmobUser;
 
 public class User extends BmobUser {
@@ -13,6 +15,15 @@ public class User extends BmobUser {
     private String home_address;//家庭住址
     private Integer age;//年龄
     private Integer gender;//性别
+    private File head_pic;
+
+    public File getHead_pic() {
+        return head_pic;
+    }
+
+    public void setHead_pic(File head_pic) {
+        this.head_pic = head_pic;
+    }
 
     public Integer getGender() {
         return gender;
