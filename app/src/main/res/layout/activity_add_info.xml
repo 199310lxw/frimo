@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff">
-   <include layout="@layout/main_unite_tab_layout"></include>
+    android:orientation="vertical">
+    <include layout="@layout/unite_setting_tab_layout"/>
+
 </LinearLayout>

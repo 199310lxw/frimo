@@ -38,6 +38,10 @@
         <activity android:name=".activity.LoginActivity"/>
         <activity android:name=".activity.DetailInfoActivity"/>
         <activity android:name=".activity.SettingActivity"/>
+        <activity android:name=".activity.SetPassActivity"/>
+        <activity android:name=".activity.AddInfoActivity"/>
+        <activity android:name=".activity.TickActivity"/>
+        <activity android:name=".activity.AboutActivity"/>
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
             android:authorities="com.example.frimo.BmobContentProvider">

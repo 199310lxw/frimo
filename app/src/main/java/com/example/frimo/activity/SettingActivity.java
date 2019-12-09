@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.example.frimo.MainActivity;
 import com.example.frimo.R;
@@ -21,6 +22,34 @@ public class SettingActivity extends BaseActivity {
         initView();
     }
     private void initView(){
+        findViewById(R.id.re_account).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in =new Intent(getApplicationContext(),SetPassActivity.class);
+                startActivity(in);
+            }
+        });
+        findViewById(R.id.re_add_info).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in=new Intent(getApplicationContext(),AddInfoActivity.class);
+                startActivity(in);
+            }
+        });
+        findViewById(R.id.re_about).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in=new Intent(getApplicationContext(),AboutActivity.class);
+                startActivity(in);
+            }
+        });
+        findViewById(R.id.re_help).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in=new Intent(getApplicationContext(),TickActivity.class);
+                startActivity(in);
+            }
+        });
         findViewById(R.id.img_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

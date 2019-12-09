@@ -18,6 +18,7 @@ import com.example.frimo.fragments.TrendsFrg;
 import com.example.frimo.fragments.UserFrg;
 
 import com.example.frimo.utils.FragmentUtil;
+import com.example.frimo.utils.StatusBarUtil;
 import com.example.frimo.utils.SystemUtil;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class MainActivity extends BaseActivity {
 
         SystemUtil.setAndroidNativeLightStatusBar(this, false);
         SystemUtil.initSystemBarTint(this, getResources().getColor(R.color.transparent_bg));
+
         getLocalLoginData();
         initView();
     }

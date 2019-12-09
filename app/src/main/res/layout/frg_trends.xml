@@ -3,17 +3,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/unite_top_tab_size"
-        android:background="@drawable/home_tab_bg">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/main_txt_trends"
-            android:layout_marginTop="@dimen/unite_txt_to_top_tab_size"
-            android:textSize="@dimen/unite_top_tab_txt_size"
-            android:textColor="@color/white"
-            android:layout_centerHorizontal="true"/>
-    </RelativeLayout>
+    <include layout="@layout/main_unite_tab_layout"></include>
 </LinearLayout>
