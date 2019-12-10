@@ -11,18 +11,17 @@ public class User extends BmobUser {
     private String birthday;//生日
     private String weChatNumber;//微信号
     private String qqNumber;//QQ号
-    private String address;//住址
-    private String home_address;//家庭住址
+    private String city;//城市
+    private String hometown;//家庭住址
     private Integer age;//年龄
     private Integer gender;//性别
-    private File head_pic;
 
-    public File getHead_pic() {
-        return head_pic;
+    public String getCity() {
+        return city;
     }
 
-    public void setHead_pic(File head_pic) {
-        this.head_pic = head_pic;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public Integer getGender() {
@@ -81,19 +80,11 @@ public class User extends BmobUser {
         this.qqNumber = qqNumber;
     }
 
-    public String getAddress() {
-        return address;
+    public String getHometown() {
+        return hometown;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getHome_address() {
-        return home_address;
-    }
-
-    public void setHome_address(String home_address) {
-        this.home_address = home_address;
+    public void setHometown(String hometown) {
+        this.hometown = hometown;
     }
 }

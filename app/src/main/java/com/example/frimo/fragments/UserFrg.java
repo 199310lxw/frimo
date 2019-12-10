@@ -1,9 +1,11 @@
 package com.example.frimo.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,21 +27,23 @@ import com.example.frimo.activity.SettingActivity;
 import com.example.frimo.beans.User;
 import com.example.frimo.receiver.LoginReceiver;
 import com.example.frimo.utils.Constants;
+import com.example.frimo.utils.GetPathFromUri;
 
 import java.util.List;
 
 public class UserFrg  extends Fragment implements View.OnClickListener,LoginReceiver.IisLogin {
     private static final String TAG="UserFrg";
+    private static final  int REQUEST_PICK_IMAGE=0;
 
     private ImageView img_set;
     private ImageView head_pic;
     private TextView txt_username;
 
-    private RelativeLayout relative_collect_people,relative_collect_trend,relative_detail_info,relative_my_trend;
+    private RelativeLayout relative_collect_people,relative_collect_trend,relative_my_trend;
 
     private Boolean isLogin;
     private LoginReceiver receiver;
-    private List<User> list_user;
+    private User user;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = View.inflate(getActivity(), R.layout.frg_user, null);
@@ -67,7 +71,6 @@ public class UserFrg  extends Fragment implements View.OnClickListener,LoginRece
 
         relative_collect_people=view.findViewById(R.id.relative_collect_people);
         relative_collect_trend=view.findViewById(R.id.relative_collect_trend);
-        relative_detail_info=view.findViewById(R.id.relative_detail_info);
         relative_my_trend=view.findViewById(R.id.relative_my_trend);
 
         initReceiver();
@@ -75,14 +78,14 @@ public class UserFrg  extends Fragment implements View.OnClickListener,LoginRece
         img_set.setOnClickListener(this);
         relative_collect_people.setOnClickListener(this);
         relative_collect_trend.setOnClickListener(this);
-        relative_detail_info.setOnClickListener(this);
         relative_my_trend.setOnClickListener(this);
 
         head_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(isLogin){
-                    Toast.makeText(getActivity(), "用户已经登陆了", Toast.LENGTH_SHORT).show();
+                     Intent in=new Intent(getActivity(),DetailInfoActivity.class);
+                     startActivity(in);
                 }else{
                     Intent in_login=new Intent(getActivity(), LoginActivity.class);
                     startActivity(in_login);
@@ -106,10 +109,6 @@ public class UserFrg  extends Fragment implements View.OnClickListener,LoginRece
                 case R.id.relative_collect_trend:
                     Toast.makeText(getActivity(),"哈哈哈，我已经登陆了",Toast.LENGTH_SHORT).show();
                     break;
-                case R.id.relative_detail_info:
-                    Intent in=new Intent(getActivity(), DetailInfoActivity.class);
-                    startActivity(in);
-                    break;
                 case R.id.relative_my_trend:
                     Toast.makeText(getActivity(),"哈哈哈，我已经登陆了",Toast.LENGTH_SHORT).show();
                     break;
@@ -118,6 +117,8 @@ public class UserFrg  extends Fragment implements View.OnClickListener,LoginRece
             Toast.makeText(getActivity(),"请先登陆",Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     /**
      * 获取本地 SharedPreferences保存的用户数据
@@ -136,25 +137,22 @@ public class UserFrg  extends Fragment implements View.OnClickListener,LoginRece
         if(tag==0){
             isLogin=false;
             txt_username.setText("游客1234567");
-            Log.e(TAG,isLogin+"哈哈哈哈");
         }else{
             isLogin=true;
-            Log.e(TAG,isLogin+"嘿嘿嘿嘿");
         }
     }
 
     @Override
     public void setBundle(Bundle bundle) {
-        list_user=(List<User>) bundle.getSerializable("user_info");
-        txt_username.setText(list_user.get(0).getMobilePhoneNumber());
-        Log.e(TAG,list_user.get(0).getMobilePhoneNumber()+"-----------?");
+        user=(User) bundle.getSerializable("user_info");
+        txt_username.setText(user.getNickName());
+        Log.e(TAG,user.getMobilePhoneNumber()+"-----------?");
     }
+
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         getActivity().getApplicationContext().unregisterReceiver(receiver);
     }
-
-
 }

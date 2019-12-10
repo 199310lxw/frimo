@@ -20,7 +20,8 @@ public class BaseActivity extends AppCompatActivity {
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.RECORD_AUDIO};
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.MANAGE_DOCUMENTS};
     //请求状态码动态申请权限
     private static int REQUEST_PERMISSION_CODE = 1;
 

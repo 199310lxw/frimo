@@ -4,4 +4,8 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
    <include layout="@layout/main_unite_tab_layout"></include>
+   <com.example.frimo.views.RefreashRecyclerView
+       android:id="@+id/rv"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"/>
 </LinearLayout>

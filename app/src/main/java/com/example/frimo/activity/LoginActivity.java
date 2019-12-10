@@ -2,6 +2,7 @@ package com.example.frimo.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,10 +21,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.LogInListener;
 
 public class LoginActivity extends BaseActivity {
+    private static final String TAG="LoginActivity";
     private Boolean login_state=false;
     private TextView txt_register, txt_forget;
     private EditText edit_username, edit_password;
@@ -82,37 +86,33 @@ public class LoginActivity extends BaseActivity {
      * 检查输入账号密码是否正确
      */
     private void checkData(final String str_username, final String str_password) {
-        BmobQuery<User> userBmobQuery = new BmobQuery<>();
-        userBmobQuery.addWhereEqualTo("username", str_username);
-        userBmobQuery.addWhereEqualTo("password", str_password);
-        userBmobQuery.findObjects(new FindListener<User>() {
+
+       User.loginByAccount(str_username, str_password, new LogInListener<User>() {
             @Override
-            public void done(List<User> object, BmobException e) {
-                if (e == null) {
-                    if (object.size() > 0) {
+            public void done(User user, BmobException e) {
+                if(user!=null){
+                    if (e == null) {
                         //发送广播通知登陆成功
                         Intent in_receiver=new Intent(Constants.ISLOGIN_RECEIVER_ACTION);
                         Bundle bundle=new Bundle();
-                        bundle.putSerializable("user_info",(Serializable)object);
+                        bundle.putSerializable("user_info",(Serializable)user);
                         in_receiver.putExtra("user_bundle",bundle);
                         sendBroadcast(in_receiver);
 
-//                        saveDataInLocal(str_username,str_password,true);
-                        new SharedPreferenceUtil(getApplicationContext()).saveUserDataInLocal(str_username,str_password,true);
-
-
-
+                        new SharedPreferenceUtil(getApplicationContext()).saveUserDataInLocal(user,true);
                         Toast.makeText(getApplicationContext(), "登陆成功", Toast.LENGTH_SHORT).show();
                         Intent in = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(in);
                         finish();
-                    }else{
-                        Toast.makeText(getApplicationContext(), "账号或密码错误", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if(e.getErrorCode()==9016){
+                            Toast.makeText(getApplicationContext(), "网络错误"+e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                        }
+                        Toast.makeText(getApplicationContext(), "账号或密码错误"+e.getErrorCode(), Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(getApplicationContext(), "登陆失败", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
     }
 }

@@ -2,6 +2,8 @@ package com.example.frimo.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
@@ -63,6 +65,40 @@ public class SystemUtil {
     }
 
 
-
+    /**
+     * 获取版本号
+     *
+     * @return
+     */
+    public static int getVersionCode(Context context) {
+        // 包管理器 可以获取清单文件信息
+        PackageManager packageManager = context.getPackageManager();
+        try {
+            // 获取包信息
+            // 参1 包名 参2 获取额外信息的flag 不需要的话 写0
+            PackageInfo packageInfo = packageManager.getPackageInfo(
+                    context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    /**
+     * 获取版本名字
+     *
+     * @return
+     */
+    public static String getVersionName(Context context) {
+        PackageManager manager =context.getPackageManager();
+        String name = null;
+        try {
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            name = info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return name;
+    }
 
 }

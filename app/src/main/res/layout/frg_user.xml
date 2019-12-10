@@ -97,36 +97,6 @@
                             android:layout_marginTop="4dp"/>
                     </RelativeLayout>
                 </LinearLayout>
-
-                <RelativeLayout
-                    android:id="@+id/relative_detail_info"
-                    android:layout_width="match_parent"
-                    android:background="@color/white"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="46dp">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="14dp"
-                        android:src="@mipmap/frg_user_detailinfo_pic" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="详细资料"
-                        android:textColor="#239191"/>
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginRight="14dp"
-                        android:src="@mipmap/frg_user_next_pic" />
-                </RelativeLayout>
-
                 <RelativeLayout
                     android:id="@+id/relative_my_trend"
                     android:layout_width="match_parent"

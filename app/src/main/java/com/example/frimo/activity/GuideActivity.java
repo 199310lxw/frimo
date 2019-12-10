@@ -1,10 +1,13 @@
 package com.example.frimo.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,14 +17,19 @@ import com.example.frimo.R;
 import com.example.frimo.utils.SystemUtil;
 
 public class GuideActivity extends AppCompatActivity {
+    private static final String TAG="GuideActivity";
     //停留的时长
     private static final long DELAY_TIME = 1000;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
         SystemUtil.setAndroidNativeLightStatusBar(this, false);
         SystemUtil.initSystemBarTint(this, getResources().getColor(R.color.transparent_bg));
+
+        Log.e(TAG,SystemUtil.getVersionName(this)+"------");
+        Log.e(TAG,SystemUtil.getVersionCode(this)+"------");
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
