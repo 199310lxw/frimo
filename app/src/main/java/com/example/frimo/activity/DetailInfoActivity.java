@@ -91,7 +91,7 @@ public class DetailInfoActivity extends BaseActivity implements View.OnClickList
         //第二个参数为缺省值，如果不存在该key，返回缺省值
         String username=sp.getString("username","");
         String nickname=sp.getString("nickname","");
-        int gender=sp.getInt("gender",0);
+        int gender=sp.getInt("gender",-1);
         int age=sp.getInt("age",0);
         String city=sp.getString("city","");
         String hometown=sp.getString("hometown","");

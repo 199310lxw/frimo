@@ -25,7 +25,7 @@
                     android:layout_height="240dp"
                     android:background="#239191">
 
-                    <ImageView
+                    <com.example.frimo.views.CircleImageView
                         android:id="@+id/head_pic"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
