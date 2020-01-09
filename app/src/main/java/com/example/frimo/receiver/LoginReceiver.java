@@ -17,13 +17,10 @@ public class LoginReceiver extends BroadcastReceiver {
               mIisLogin.setData(0);
           }else if(intent.getAction().equals(Constants.ISLOGIN_RECEIVER_ACTION)){
               mIisLogin.setData(1);
-              bundle=intent.getBundleExtra("user_bundle");
-              mIisLogin.setBundle(bundle);
           }
     }
     public interface IisLogin {
         void setData(int tag);
-        void setBundle(Bundle bundle);
     }
     public void setReceiverListener (IisLogin mIisLogin) {
         this.mIisLogin = mIisLogin;

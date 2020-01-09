@@ -1,11 +1,9 @@
 package com.example.frimo.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,15 +19,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.frimo.R;
+import com.example.frimo.activity.CollectPersonActivity;
 import com.example.frimo.activity.DetailInfoActivity;
 import com.example.frimo.activity.LoginActivity;
 import com.example.frimo.activity.SettingActivity;
-import com.example.frimo.beans.User;
+import com.example.frimo.beans.Data;
 import com.example.frimo.receiver.LoginReceiver;
 import com.example.frimo.utils.Constants;
-import com.example.frimo.utils.GetPathFromUri;
-
-import java.util.List;
 
 public class UserFrg  extends Fragment implements View.OnClickListener,LoginReceiver.IisLogin {
     private static final String TAG="UserFrg";
@@ -43,15 +39,10 @@ public class UserFrg  extends Fragment implements View.OnClickListener,LoginRece
 
     private Boolean isLogin;
     private LoginReceiver receiver;
-    private User user;
+    private Data user;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = View.inflate(getActivity(), R.layout.frg_user, null);
-        Bundle bundle =this.getArguments();//得到从Activity传来的数据
-        if(bundle!=null){
-            isLogin=bundle.getBoolean("ISLOGIN");
-            Log.e(TAG,isLogin+"hhhhhhh");
-        }
 
         initView(view);
         return view;
@@ -101,10 +92,11 @@ public class UserFrg  extends Fragment implements View.OnClickListener,LoginRece
     }
     @Override
     public void onClick(View view) {
-        if(isLogin) {
+        if(isLogin){
             switch (view.getId()) {
                 case R.id.relative_collect_people:
-                    Toast.makeText(getActivity(),"哈哈哈，我已经登陆了",Toast.LENGTH_SHORT).show();
+                    Intent in_person=new Intent(getActivity(), CollectPersonActivity.class);
+                    startActivity(in_person);
                     break;
                 case R.id.relative_collect_trend:
                     Toast.makeText(getActivity(),"哈哈哈，我已经登陆了",Toast.LENGTH_SHORT).show();
@@ -114,8 +106,9 @@ public class UserFrg  extends Fragment implements View.OnClickListener,LoginRece
                     break;
             }
         }else{
-            Toast.makeText(getActivity(),"请先登陆",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"你还没登录",Toast.LENGTH_SHORT).show();
         }
+
     }
 
 
@@ -126,9 +119,10 @@ public class UserFrg  extends Fragment implements View.OnClickListener,LoginRece
     private  void getLocalLoginData(){
         SharedPreferences sp=getActivity().getSharedPreferences("userdata", Context.MODE_PRIVATE);
         //第二个参数为缺省值，如果不存在该key，返回缺省值
-        String username=sp.getString("username","游客123456");
+        String username=sp.getString("username","游客");
+        String nickname=sp.getString("nickname","游客");
         String password=sp.getString("password","");
-        txt_username.setText(username);
+        txt_username.setText(nickname);
         isLogin=sp.getBoolean("logintag",false);
     }
 
@@ -136,18 +130,13 @@ public class UserFrg  extends Fragment implements View.OnClickListener,LoginRece
     public void setData(int tag) {
         if(tag==0){
             isLogin=false;
-            txt_username.setText("游客1234567");
+            txt_username.setText("游客");
         }else{
             isLogin=true;
+            getLocalLoginData();
         }
     }
 
-    @Override
-    public void setBundle(Bundle bundle) {
-        user=(User) bundle.getSerializable("user_info");
-        txt_username.setText(user.getNickName());
-        Log.e(TAG,user.getMobilePhoneNumber()+"-----------?");
-    }
 
 
     @Override

@@ -21,7 +21,7 @@ public class TrendsFrg extends Fragment {
         return view;
     }
     private void initView(View view){
-        main_top_txt_title=view.findViewById(R.id.main_top_txt_title);
-        main_top_txt_title.setText(getResources().getString(R.string.main_txt_trends));
+//        main_top_txt_title=view.findViewById(R.id.main_top_txt_title);
+//        main_top_txt_title.setText(getResources().getString(R.string.main_txt_trends));
     }
 }

@@ -2,6 +2,7 @@ package com.example.frimo.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,19 +13,22 @@ import android.widget.Toast;
 
 import com.example.frimo.MainActivity;
 import com.example.frimo.R;
+import com.example.frimo.beans.Data;
 import com.example.frimo.beans.User;
+import com.example.frimo.constants.constants;
 import com.example.frimo.utils.Constants;
 import com.example.frimo.utils.SharedPreferenceUtil;
 import com.example.frimo.utils.SystemUtil;
+import com.google.gson.Gson;
+import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.rest.OnResponseListener;
+import com.yanzhenjie.nohttp.rest.Request;
+import com.yanzhenjie.nohttp.rest.RequestQueue;
+import com.yanzhenjie.nohttp.rest.Response;
+import com.yanzhenjie.nohttp.rest.StringRequest;
 
 import java.io.Serializable;
-import java.util.List;
 
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.LogInListener;
 
 public class LoginActivity extends BaseActivity {
     private static final String TAG="LoginActivity";
@@ -66,53 +70,56 @@ public class LoginActivity extends BaseActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent in=new Intent(getApplicationContext(), MainActivity.class);
-//                startActivity(in);
-                if(!edit_username.getText().toString().trim().equals("")){
-                    if(!edit_password.getText().toString().trim().equals("")){
-                        checkData(edit_username.getText().toString().trim(),edit_password.getText().toString().trim());
-                    }else{
-                        Toast.makeText(getApplicationContext(),"密码不能为空",Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    Toast.makeText(getApplicationContext(),"账号不能为空",Toast.LENGTH_SHORT).show();
+                if(!edit_username.getText().equals("")&&!edit_password.getText().equals("")){
+                    LoginData(edit_username.getText().toString().trim(),edit_password.getText().toString().trim());
                 }
-
             }
         });
     }
-
-    /**
-     * 检查输入账号密码是否正确
-     */
-    private void checkData(final String str_username, final String str_password) {
-
-       User.loginByAccount(str_username, str_password, new LogInListener<User>() {
+    private void LoginData(String UserName,String PassWord){
+        String url= constants.COMMON_IP+"login.php";
+        RequestQueue queue = NoHttp.newRequestQueue();
+        final Request<String> request = new StringRequest(url);
+        request.add("UserName",UserName);
+        request.add("PassWord",PassWord);
+        queue.add(0, request, new OnResponseListener<String>(){
             @Override
-            public void done(User user, BmobException e) {
-                if(user!=null){
-                    if (e == null) {
-                        //发送广播通知登陆成功
-                        Intent in_receiver=new Intent(Constants.ISLOGIN_RECEIVER_ACTION);
-                        Bundle bundle=new Bundle();
-                        bundle.putSerializable("user_info",(Serializable)user);
-                        in_receiver.putExtra("user_bundle",bundle);
-                        sendBroadcast(in_receiver);
-
-                        new SharedPreferenceUtil(getApplicationContext()).saveUserDataInLocal(user,true);
-                        Toast.makeText(getApplicationContext(), "登陆成功", Toast.LENGTH_SHORT).show();
-                        Intent in = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(in);
-                        finish();
-                    } else {
-                        if(e.getErrorCode()==9016){
-                            Toast.makeText(getApplicationContext(), "网络错误"+e.getErrorCode(), Toast.LENGTH_SHORT).show();
+            public void onSucceed(int what, Response<String> response) {
+                if(response.responseCode() == 200) {// 请求成功。
+                    String result = response.get();
+                    Log.e(TAG,"请求结果"+result);
+                    if(!result.equals("")){
+                        Gson gson=new Gson();
+                        User user=gson.fromJson(result, User.class);
+                        if(user.getCode().equals("200")){
+                            Data data=user.getData();
+                            new SharedPreferenceUtil(LoginActivity.this).saveUserDataInLocal(data,true);
+                            Intent  in_receiver=new Intent(Constants.ISLOGIN_RECEIVER_ACTION);
+                            sendBroadcast( in_receiver);
+                            Intent in=new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(in);
                         }
-                        Toast.makeText(getApplicationContext(), "账号或密码错误"+e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(LoginActivity.this,"用户名或密码错误",Toast.LENGTH_SHORT).show();
                     }
                 }
             }
-        });
 
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                Log.e(TAG,"请求错误"+response.getException());
+            }
+
+            @Override
+            public void onStart(int what) {
+                // 这里可以show()一个wait dialog。
+            }
+
+            @Override
+            public void onFinish(int what) {
+                // 这里可以dismiss()上面show()的wait dialog。
+            }
+        });
     }
+
 }

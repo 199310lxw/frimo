@@ -12,10 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
 
+import com.example.frimo.R;
 import com.example.frimo.utils.SystemUtil;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends FragmentActivity {
     //1、新建变量
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,

@@ -8,6 +8,6 @@ public class Constants {
     public static final String SECRET_KEY="919bfda21291507c";
     public static final String MASTER_KEY="7dfe2e0b48337da6ac76a1c50129fb72";
 
-    public  static final String ISLOGIN_RECEIVER_ACTION="com.example.frimo.main.islogin";
-    public  static final String UNLOGIN_RECEIVER_ACTION="com.example.frimo.main.unlogin";
+    public  static final String ISLOGIN_RECEIVER_ACTION="com.example.frimo.islogin";
+    public  static final String UNLOGIN_RECEIVER_ACTION="com.example.frimo.unlogin";
 }

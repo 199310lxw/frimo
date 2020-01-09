@@ -10,23 +10,26 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.frimo.MainActivity;
 import com.example.frimo.R;
+import com.example.frimo.beans.Data;
 import com.example.frimo.beans.User;
+import com.example.frimo.constants.constants;
+import com.example.frimo.utils.Constants;
 import com.example.frimo.utils.PhoneUtils;
+import com.example.frimo.utils.SharedPreferenceUtil;
 import com.example.frimo.utils.SystemUtil;
+import com.google.gson.Gson;
+import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.rest.OnResponseListener;
+import com.yanzhenjie.nohttp.rest.Request;
+import com.yanzhenjie.nohttp.rest.RequestQueue;
+import com.yanzhenjie.nohttp.rest.Response;
+import com.yanzhenjie.nohttp.rest.StringRequest;
 
-import java.util.List;
-
-import cn.bmob.v3.BmobObject;
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobSMS;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.QueryListener;
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
 
 public class RegisterActivity extends BaseActivity {
+    private static final String TAG="RegisterActivity";
     private EditText edit_phoneNumber;
     private EditText edit_passWord;
     private EditText edit_verity;
@@ -34,9 +37,6 @@ public class RegisterActivity extends BaseActivity {
     private Button btn_register;
     private String phonenum, PassWord, verrity;
     private TextView txt_verity;
-
-    private Boolean phone_checked=false;//手机号是否被注册,默认没有被注册
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,7 @@ public class RegisterActivity extends BaseActivity {
                 if (!phonenum.equals("")) {
                     if(!verrity.equals("")) {
                         if (!PassWord.equals("")) {
-                            confirmSMSCode(phonenum,verrity);
+
                         } else {
                             Toast.makeText(getApplicationContext(), "请输入密码!", Toast.LENGTH_SHORT).show();
                         }
@@ -90,116 +90,60 @@ public class RegisterActivity extends BaseActivity {
                if(new PhoneUtils(getApplicationContext()).judgePhone(edit_phoneNumber.getText().toString().trim())){
                    myCountDownTimer.start();
                    String phone_num=edit_phoneNumber.getText().toString().trim();
-                   getSMSCode(phone_num);
+
                }
            }
        });
 
     }
 
-    /**
-     * 获取短信验证码
-     */
-    private void getSMSCode(String str_phone){
-
-        if(!checkIsRegister(str_phone)){
-            BmobSMS.requestSMSCode(str_phone, "frimo", new QueryListener<Integer>() {
-                @Override
-                public void done(Integer smsId, BmobException e) {
-                    if (e == null) {
-                        Toast.makeText(getApplicationContext(),"发送验证码成功,请稍后!",Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(),"发送验证码失败!",Toast.LENGTH_SHORT).show();
-                        Log.e("regster","发送验证码失败:"+e.getErrorCode() + "-" + e.getMessage() + "\n");
+private void register(String UserName,String PassWord){
+    String url= constants.COMMON_IP+"register.php";
+    RequestQueue queue = NoHttp.newRequestQueue();
+    final Request<String> request = new StringRequest(url);
+    request.add("UserName",UserName);
+    request.add("PassWord",PassWord);
+    queue.add(0, request, new OnResponseListener<String>(){
+        @Override
+        public void onSucceed(int what, Response<String> response) {
+            if(response.responseCode() == 200) {// 请求成功。
+                String result = response.get();
+                Log.e(TAG,"请求结果"+result);
+                if(!result.equals("")){
+                    Gson gson=new Gson();
+                    User user=gson.fromJson(result, User.class);
+                    if(user.getCode().equals("200")){
+                        Data data=user.getData();
+                        new SharedPreferenceUtil(RegisterActivity.this).saveUserDataInLocal(data,true);
+                        Intent in_receiver=new Intent(Constants.ISLOGIN_RECEIVER_ACTION);
+                        sendBroadcast( in_receiver);
+                        Intent in=new Intent(RegisterActivity.this, MainActivity.class);
+                        startActivity(in);
                     }
+                }else{
+                    Toast.makeText(RegisterActivity.this,"用户名或密码错误",Toast.LENGTH_SHORT).show();
                 }
-            });
-        }else{
-            Toast.makeText(getApplicationContext(), "手机号已被注册!", Toast.LENGTH_SHORT).show();
+            }
         }
 
+        @Override
+        public void onFailed(int what, Response<String> response) {
+            Log.e(TAG,"请求错误"+response.getException());
+        }
 
-    }
+        @Override
+        public void onStart(int what) {
+            // 这里可以show()一个wait dialog。
+        }
 
-    /**
-     * 判断手机号是否已经注册
-     * @param phoneNum
-     */
-    private Boolean checkIsRegister(String phoneNum){
-        BmobQuery<User> query = new BmobQuery<>();
-        query.addWhereEqualTo("mobilePhoneNumber", phoneNum);
+        @Override
+        public void onFinish(int what) {
+            // 这里可以dismiss()上面show()的wait dialog。
+        }
+    });
+}
 
-        query.findObjects(new FindListener<User>() {
-            @Override
-            public void done(List<User> object, BmobException e) {
-                if (e == null) {
-                     if(object.size()>0){
-                         phone_checked=true;
-                     }else{
-                         phone_checked=false;
-                     }
-                } else {
-                    phone_checked=false;
-                }
-            }
-        });
-        return phone_checked;
-    }
 
-    /**
-     * 验证验证码是否正确
-     */
-    private void confirmSMSCode(String phone_num,String smsCode){
-        BmobSMS.verifySmsCode(phone_num, smsCode, new UpdateListener() {
-            @Override
-            public void done(BmobException e) {
-                if (e == null) {
-                    User user=new User();
-                    user.setUsername(phonenum);//必填项，不然报错
-                    user.setMobilePhoneNumber(phonenum);
-                    user.setPassword(PassWord);//必填项，不然报错
-                    user.setMobilePhoneNumberVerified(true);
-                    user.signUp(new SaveListener<User>() {
-                        @Override
-                        public void done(User user, BmobException e) {
-                            if (e == null) {
-                                Toast.makeText(getApplicationContext(), "注册成功", Toast.LENGTH_SHORT).show();
-                                Intent in=new Intent(getApplicationContext(), LoginActivity.class);
-                                startActivity(in);
-                                finish();
-                            } else {
-                                Log.e("register",e.getErrorCode()+":"+e.getMessage());
-                                Toast.makeText(getApplicationContext(), "验证码不正确", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                } else {
-                    Log.e("register",""+e.getErrorCode()+"-----"+e.getMessage());
-                    if(e.getErrorCode()==10007){
-                        Toast.makeText(getApplicationContext(), "验证码请勿重复使用！"+e.getErrorCode(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * 注册提交数据
-     * @param user
-     */
-    private void saveData(BmobObject user) {
-        user.save(new SaveListener<String>() {
-            @Override
-            public void done(String objectId, BmobException e) {
-                if (e == null) {
-                    Toast.makeText(getApplicationContext(), "添加数据成功，返回objectId为：" + objectId, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "创建数据失败：" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e("register", e.getMessage());
-                }
-            }
-        });
-    }
 
     /**
      * 获取验证码倒计时

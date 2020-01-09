@@ -18,7 +18,6 @@ import com.example.frimo.fragments.TrendsFrg;
 import com.example.frimo.fragments.UserFrg;
 
 import com.example.frimo.utils.FragmentUtil;
-import com.example.frimo.utils.StatusBarUtil;
 import com.example.frimo.utils.SystemUtil;
 
 import java.util.ArrayList;
@@ -27,6 +26,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends BaseActivity {
+    private boolean flag=false;//状态栏颜色切换标签
     private static final String TAG = "MainActivity";
     private Boolean isLogin = false;//是否登录,默认没登陆
     private RadioGroup mRadioGroup;
@@ -42,10 +42,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        SystemUtil.setAndroidNativeLightStatusBar(this, false);
-        SystemUtil.initSystemBarTint(this, getResources().getColor(R.color.transparent_bg));
-
+        SystemUtil.initSystemBarTint(this,getResources().getColor(R.color.transparent_bg));//状态栏颜色
+        SystemUtil.setAndroidNativeLightStatusBar(this,true);//状态栏字体颜色,true为黑色，false为白色
         getLocalLoginData();
         initView();
     }
@@ -81,6 +79,7 @@ public class MainActivity extends BaseActivity {
     private void initView() {
         mRadioGroup = findViewById(R.id.tab_bar);
         initFragments();
+
 //        setTabSelection(0);
         new FragmentUtil(fm).showFragment(R.id.frg_container, mFragments.get(0), isLogin);
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -90,12 +89,18 @@ public class MainActivity extends BaseActivity {
                 switch (checkedId) {
                     case R.id.tab_home:
                         new FragmentUtil(fm).showFragment(R.id.frg_container, mFragments.get(0), isLogin);
+                        SystemUtil.setAndroidNativeLightStatusBar(MainActivity.this,true);
+                        flag=false;
                         break;
                     case R.id.tab_trends:
                         new FragmentUtil(fm).showFragment(R.id.frg_container, mFragments.get(1), isLogin);
+                        SystemUtil.setAndroidNativeLightStatusBar(MainActivity.this,true);
+                        flag=false;
                         break;
                     case R.id.tab_user:
                         new FragmentUtil(fm).showFragment(R.id.frg_container, mFragments.get(2), isLogin);
+                        SystemUtil.setAndroidNativeLightStatusBar(MainActivity.this,false);
+                        flag=true;
                         break;
                 }
             }

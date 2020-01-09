@@ -39,7 +39,7 @@
                         android:layout_below="@+id/head_pic"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="6dp"
-                        android:text="游客1234567"
+                        android:text="游客"
                         android:textColor="#ffffff" />
                 </RelativeLayout>
                 <LinearLayout

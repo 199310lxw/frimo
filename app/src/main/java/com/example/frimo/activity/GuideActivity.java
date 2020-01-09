@@ -16,7 +16,7 @@ import com.example.frimo.MainActivity;
 import com.example.frimo.R;
 import com.example.frimo.utils.SystemUtil;
 
-public class GuideActivity extends AppCompatActivity {
+public class GuideActivity extends BaseActivity {
     private static final String TAG="GuideActivity";
     //停留的时长
     private static final long DELAY_TIME = 1000;
@@ -27,9 +27,6 @@ public class GuideActivity extends AppCompatActivity {
         setContentView(R.layout.activity_guide);
         SystemUtil.setAndroidNativeLightStatusBar(this, false);
         SystemUtil.initSystemBarTint(this, getResources().getColor(R.color.transparent_bg));
-
-        Log.e(TAG,SystemUtil.getVersionName(this)+"------");
-        Log.e(TAG,SystemUtil.getVersionCode(this)+"------");
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

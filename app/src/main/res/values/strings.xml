@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">陌友</string>
+    <string name="app_name">FriMo</string>
 
     //主页面
     <string name="main_txt_homepage">首页</string>
@@ -23,5 +23,22 @@
   //设置页面
     <string  name="setting_txt_top_title">设置</string>
     <string  name="setting_txt_unlogin">退出登陆</string>
+
+    <string name="header_pulling">下拉可以刷新</string>
+    <string name="header_refreshing">正在刷新…</string>
+    <string name="header_loading">正在加载…</string>
+    <string name="header_release">释放立即刷新</string>
+    <string name="header_finish">刷新完成</string>
+    <string name="header_failed">刷新失败</string>
+    <string name="header_update">上次更新 M-d HH:mm</string>
+    <string name="header_secondary">释放进入二楼</string>
+
+    <string name="footer_pulling">上拉加载更多</string>
+    <string name="footer_release">释放立即加载</string>
+    <string name="footer_loading">正在加载…</string>
+    <string name="footer_refreshing">正在刷新…</string>
+    <string name="footer_finish">加载完成</string>
+    <string name="footer_failed">加载失败</string>
+    <string name="footer_nothing">没有更多数据了</string>
 
 </resources>
