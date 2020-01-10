@@ -120,9 +120,14 @@ public class UserFrg  extends Fragment implements View.OnClickListener,LoginRece
         SharedPreferences sp=getActivity().getSharedPreferences("userdata", Context.MODE_PRIVATE);
         //第二个参数为缺省值，如果不存在该key，返回缺省值
         String username=sp.getString("username","游客");
-        String nickname=sp.getString("nickname","游客");
+        String nickname=sp.getString("nickname","");
         String password=sp.getString("password","");
-        txt_username.setText(nickname);
+        if(!username.equals("")){
+            txt_username.setText(nickname);
+        }else{
+            txt_username.setText(username);
+        }
+
         isLogin=sp.getBoolean("logintag",false);
     }
 

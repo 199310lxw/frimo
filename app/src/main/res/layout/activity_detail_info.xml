@@ -5,14 +5,14 @@
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="68dp"
         android:background="@color/gray">
         <ImageView
             android:id="@+id/img_back"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@mipmap/img_back"
-            android:layout_centerVertical="true"
+            android:layout_marginTop="36dp"
             android:layout_marginLeft="10dp"/>
         <TextView
             android:layout_width="wrap_content"
@@ -20,7 +20,8 @@
             android:text="个人信息"
             android:textSize="18sp"
             android:textColor="#ffffff"
-            android:layout_centerInParent="true"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="36dp"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/re_headpic"

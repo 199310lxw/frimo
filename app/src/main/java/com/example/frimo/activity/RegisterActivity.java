@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.frimo.MainActivity;
 import com.example.frimo.R;
 import com.example.frimo.beans.Data;
+import com.example.frimo.beans.RegisterData;
 import com.example.frimo.beans.User;
 import com.example.frimo.constants.constants;
 import com.example.frimo.utils.Constants;
@@ -29,7 +30,7 @@ import com.yanzhenjie.nohttp.rest.StringRequest;
 
 
 public class RegisterActivity extends BaseActivity {
-    private static final String TAG="RegisterActivity";
+    private static final String TAG = "RegisterActivity";
     private EditText edit_phoneNumber;
     private EditText edit_passWord;
     private EditText edit_verity;
@@ -51,7 +52,7 @@ public class RegisterActivity extends BaseActivity {
         edit_phoneNumber = findViewById(R.id.edit_phoneNumber);
         edit_passWord = findViewById(R.id.edit_password);
         edit_verity = findViewById(R.id.edit_verity);
-        txt_verity=findViewById(R.id.txt_verity);
+        txt_verity = findViewById(R.id.txt_verity);
         btn_register = findViewById(R.id.btn_register);
 
 
@@ -68,81 +69,79 @@ public class RegisterActivity extends BaseActivity {
                 verrity = edit_verity.getText().toString();
                 PassWord = edit_passWord.getText().toString();
                 if (!phonenum.equals("")) {
-                    if(!verrity.equals("")) {
+                    if (!verrity.equals("")) {
                         if (!PassWord.equals("")) {
-
+                            register(phonenum, PassWord);
                         } else {
                             Toast.makeText(getApplicationContext(), "请输入密码!", Toast.LENGTH_SHORT).show();
                         }
-                    }else{
+                    } else {
                         Toast.makeText(getApplicationContext(), "请输入验证码!", Toast.LENGTH_SHORT).show();
                     }
-                  }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(), "请输入手机号!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        final MyCountDownTimer myCountDownTimer = new MyCountDownTimer(60000,1000);
-       txt_verity.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               if(new PhoneUtils(getApplicationContext()).judgePhone(edit_phoneNumber.getText().toString().trim())){
-                   myCountDownTimer.start();
-                   String phone_num=edit_phoneNumber.getText().toString().trim();
+        final MyCountDownTimer myCountDownTimer = new MyCountDownTimer(60000, 1000);
+        txt_verity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (new PhoneUtils(getApplicationContext()).judgePhone(edit_phoneNumber.getText().toString().trim())) {
+                    myCountDownTimer.start();
+                    String phone_num = edit_phoneNumber.getText().toString().trim();
 
-               }
-           }
-       });
+                }
+            }
+        });
 
     }
 
-private void register(String UserName,String PassWord){
-    String url= constants.COMMON_IP+"register.php";
-    RequestQueue queue = NoHttp.newRequestQueue();
-    final Request<String> request = new StringRequest(url);
-    request.add("UserName",UserName);
-    request.add("PassWord",PassWord);
-    queue.add(0, request, new OnResponseListener<String>(){
-        @Override
-        public void onSucceed(int what, Response<String> response) {
-            if(response.responseCode() == 200) {// 请求成功。
-                String result = response.get();
-                Log.e(TAG,"请求结果"+result);
-                if(!result.equals("")){
-                    Gson gson=new Gson();
-                    User user=gson.fromJson(result, User.class);
-                    if(user.getCode().equals("200")){
-                        Data data=user.getData();
-                        new SharedPreferenceUtil(RegisterActivity.this).saveUserDataInLocal(data,true);
-                        Intent in_receiver=new Intent(Constants.ISLOGIN_RECEIVER_ACTION);
-                        sendBroadcast( in_receiver);
-                        Intent in=new Intent(RegisterActivity.this, MainActivity.class);
-                        startActivity(in);
+    private void register(String UserName, String PassWord) {
+        String url = constants.COMMON_IP + "register.php";
+        RequestQueue queue = NoHttp.newRequestQueue();
+        final Request<String> request = new StringRequest(url);
+        request.add("UserName", UserName);
+        request.add("PassWord", PassWord);
+        queue.add(0, request, new OnResponseListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                if (response.responseCode() == 200) {// 请求成功。
+                    String result = response.get();
+                    Log.e(TAG, "请求结果" + result);
+                    if (!result.equals("")) {
+                        Gson gson = new Gson();
+                        RegisterData user = gson.fromJson(result, RegisterData.class);
+                        String data = user.getData();
+                        if (user.getCode().equals("200")) {
+                            Toast.makeText(RegisterActivity.this, data, Toast.LENGTH_SHORT).show();
+                            Intent in = new Intent(RegisterActivity.this, MainActivity.class);
+                            startActivity(in);
+                        }else{
+                            Toast.makeText(RegisterActivity.this, data, Toast.LENGTH_SHORT).show();
+                        }
+                    } else{
+                        Toast.makeText(RegisterActivity.this, "服务器未响应", Toast.LENGTH_SHORT).show();
                     }
-                }else{
-                    Toast.makeText(RegisterActivity.this,"用户名或密码错误",Toast.LENGTH_SHORT).show();
                 }
             }
-        }
 
-        @Override
-        public void onFailed(int what, Response<String> response) {
-            Log.e(TAG,"请求错误"+response.getException());
-        }
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                Log.e(TAG, "请求错误" + response.getException());
+            }
 
-        @Override
-        public void onStart(int what) {
-            // 这里可以show()一个wait dialog。
-        }
+            @Override
+            public void onStart(int what) {
+                // 这里可以show()一个wait dialog。
+            }
 
-        @Override
-        public void onFinish(int what) {
-            // 这里可以dismiss()上面show()的wait dialog。
-        }
-    });
-}
-
+            @Override
+            public void onFinish(int what) {
+                // 这里可以dismiss()上面show()的wait dialog。
+            }
+        });
+    }
 
 
     /**
@@ -160,7 +159,7 @@ private void register(String UserName,String PassWord){
         public void onTick(long l) {
             //防止计时过程中重复点击
             txt_verity.setClickable(false);
-            txt_verity.setText(l/1000+"s");
+            txt_verity.setText(l / 1000 + "s");
             txt_verity.setBackground(getResources().getDrawable(R.drawable.shape_button_round_corner_pressed));
         }
 
