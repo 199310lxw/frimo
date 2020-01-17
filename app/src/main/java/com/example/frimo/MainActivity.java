@@ -43,7 +43,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SystemUtil.initSystemBarTint(this,getResources().getColor(R.color.transparent_bg));//状态栏颜色
-        SystemUtil.setAndroidNativeLightStatusBar(this,true);//状态栏字体颜色,true为黑色，false为白色
+        SystemUtil.setAndroidNativeLightStatusBar(this,false);//状态栏字体颜色,true为黑色，false为白色
         getLocalLoginData();
         initView();
     }
@@ -89,8 +89,8 @@ public class MainActivity extends BaseActivity {
                 switch (checkedId) {
                     case R.id.tab_home:
                         new FragmentUtil(fm).showFragment(R.id.frg_container, mFragments.get(0), isLogin);
-                        SystemUtil.setAndroidNativeLightStatusBar(MainActivity.this,true);
-                        flag=false;
+                        SystemUtil.setAndroidNativeLightStatusBar(MainActivity.this,false);
+                        flag=true;
                         break;
                     case R.id.tab_trends:
                         new FragmentUtil(fm).showFragment(R.id.frg_container, mFragments.get(1), isLogin);
